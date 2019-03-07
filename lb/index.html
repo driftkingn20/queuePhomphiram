@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>ห้องแล็ป</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../dist/main.css" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../dist/bootstrap3/bootstrap.min.css" />
+
+</head>
+
+<body style="background-color: #551d80;">
+
+
+  <div class="popup" style="height: 530px;
+    width: 60%;
+    background-color:  darkslategray;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);           
+    color: white;
+    font-weight: bolder;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    opacity: 0;
+    z-index: 999;">
+    <div class="q" style="font-size: 220px;">A003</div>
+    <div class="ch" style="font-size: 100px;">ช่อง 3</div>
+  </div>
+
+  <div id="main">
+    <div class="flex-fill">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-7">
+              <div style="color: white;font-size: 4em;font-weight: bold;background-color:darkorange;text-align: center;">รอเรียกตรวจ</div>
+             
+            <div class="animate">
+                <div class="headanimate">
+                    <div style="flex:1">หมายเลข</div>
+                    <div style="flex:2">ชื่อ - สกุล</div>
+                    <div style="flex:1">ประมาณ</div>
+                </div>
+                <div id="data-q" class="bodyanimate">
+                    <div class="rowsanimate">
+                        <div class="rowlist" style="flex:1;text-align: center;">A001</div>
+                        <div class="rowlist" style="flex:2;text-align: left;">คุณทดสอบ ระบบ</div>
+                        <div class="rowlist" style="flex:1;text-align: center;">10นาที</div>
+                    </div>
+
+                </div>
+            </div>
+
+          </div>
+          <div class="col-sm-5">
+
+            <div class="row">
+
+              <div class="box" style="padding-top:1cm;">
+                <div class="box-part text-center" style="height:300px;">
+                  <div class="title" style="text-align: left;margin-top: -20px;">
+                    <span class="label labelcolor3" style="background-color:darkmagenta;">กำลังรับบริการ</span>
+
+                  </div>
+                  <div class="text" style="margin-top:20px;">
+                    <span class="queue lb1 q" style="color: crimson;font-size: 70px;font-weight: bolder">A000</span><br />
+                    <span class="lb1 name" style="color: black;font-size: 60px;font-weight: bold">คุณทดสอบ ระบบ</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+                <div style="color: white;font-size: 3em;font-weight: bold;background-color: darkgreen;text-align: center;">เรียกแล้ว</div>
+                <div class="animate">
+                    <div class="headanimate">
+                        <div style="flex:1">หมายเลข</div>
+                        <div style="flex:2">ชื่อ - สกุล</div>
+                    </div>
+                    <div id="data-called" class="bodyani">
+                        <div class="rowsanimate">
+                            <div class="rowlist" style="flex:1;text-align: center;">A001</div>
+                            <div class="rowlist" style="flex:2;text-align: left;">คุณทดสอบ ระบบ</div>
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+          </div>
+          
+        </div>
+
+        <div class="row">
+          <footer class="footer">
+            <div class="fixed-bottom" style="position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            text-align: center;">
+              <div style="background-color:black;" id="textMarquee"></div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="../dist/jquery.min.js"></script>
+  <!-- <script src="../dist/jquery-1.12.4.min.js"></script> -->
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="../dist/bootstrap3/bootstrap.min.js"></script>
+  <script src="../dist/socket.io.js"></script>
+  <script>
+    function blinkX(callback, delay, repetitions) {
+      var x = 0;
+      var intervalID = window.setInterval(function () {
+        callback();
+        if (++x === repetitions) {
+          window.clearInterval(intervalID);
+        }
+      }, delay);
+    }
+
+    function popup(q, ch, delay = 5000) {
+      $('.popup .q').html(q.toUpperCase())
+      $('.popup .ch').html(ch)
+      $('.main').css('opacity', '0.25')
+      $('.popup').css('opacity', '1')
+      setTimeout(function () {
+        $('.popup').css('opacity', '0')
+        $('.main').css('opacity', '1')
+      }, delay)
+    }
+
+    function reload(speed = 45 * 1000) {
+      $("#data-q").load('left.php', function () {
+        console.log('reload...left');
+        $("#data-q").animate({
+          scrollTop: 0
+        });
+        $("#data-q").animate({
+          scrollTop: $('#data-q').prop("scrollHeight")
+        }, speed, 'linear');
+      });
+      $("#data-called").load('right.php', function () {
+                console.log('reload...right');
+                $("#data-called").animate({
+                    scrollTop: 0
+                });
+                $("#data-called").animate({
+                    scrollTop: $('#data-called').prop("scrollHeight")
+                }, speed, 'linear');
+            });
+    }
+
+    $(document).ready(function () {
+
+      var socket = io("http://192.168.0.248:19009");
+
+      $("#textMarquee").load("marquee.php");
+      reload();
+            var timerloadwaitlist = setInterval(function () {
+                reload();
+            }, 15 * 1000);
+
+      socket.on("lb1", function (q) {
+        
+        if (q != "s99999") {
+          popup(q, 'ห้องชันสูตร', 5000);
+          $(".lb1.q").html(q.toUpperCase());
+          $(".lb1.name").load("get_name.php?q=" + q);
+          blinkX(
+            function () {
+              $(".lb1").toggleClass("blink");
+            },
+            650,
+            22
+          );
+        }
+      });
+
+
+    });
+  </script>
+</body>
+
+</html>

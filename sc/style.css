@@ -1,0 +1,214 @@
+html,body{
+    padding: 0px;
+    margin: 1px;
+    height: 99.5%;
+    background-color: rgb(196, 196, 196)
+}
+.main {
+    
+    height: 92%;
+    display: flex;
+    justify-content: space-between;          
+    
+}
+
+.footer{
+    height: 8%;
+}
+
+
+.container {
+    border: 1px #ccc solid;           
+    display: flex;
+    flex-direction: column;          
+}
+.header{
+    flex-basis: 8%;            
+    font-size: 42px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+   
+}
+.content{
+    flex-basis: 92%;
+    overflow: hidden;
+}
+.item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 40px;
+    font-weight: normal;
+    text-align: center;
+    flex-direction: row;align-items:stretch;
+    width: 100%;
+}
+.calling{
+    margin: 3px;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    justify-content: space-between ;
+    font-weight: bold
+}
+.calling-item{
+    margin: 2px;
+    flex-basis: 35%;
+    border: 2px teal solid;
+    display: flex;
+    flex-direction: column
+}
+.popup {
+    height: 530px;
+    width: 60%;
+    background-color:  darkslategray;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);           
+    color: white;
+    font-weight: bolder;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    opacity: 0;
+    z-index: 999;
+}    
+.blink{
+    opacity: 0;
+}   
+
+
+/* box */
+.spancard {
+    font-size: 3em;
+}
+
+.box {
+    /* padding: 0px -10px; */
+    background-color: white;
+    margin: 2px 2px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.box-part {
+    background: #FFF;
+    border-radius: 0;
+    padding: 0px 0px;
+    margin: 10px 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.boxcolor {
+    background-color: #551d80;
+    
+}
+
+.labelcolor {
+    background-color: #652299;
+}
+
+.boxcolor1 {
+    background-color: #004D40;
+}
+
+.labelcolor1 {
+    background-color: #00695C;
+}
+
+.boxcolor2 {
+    background-color: #4E342E;
+}
+
+.labelcolor2 {
+    background-color: #3E2723;
+}
+
+.boxcolor3 {
+    background-color: #700416;
+}
+
+.labelcolor3 {
+    background-color: #910000;
+}
+
+.boxcolor4 {
+    background-color: #893089;
+}
+
+.labelcolor4 {
+    background-color: #aa3baa;
+}
+
+.boxcolor5 {
+    background-color: #031233;
+}
+
+.labelcolor5 {
+    background-color: #052670;
+}
+
+.text {
+    margin: 0px 0px;
+}
+
+.label {
+    padding: 4px;
+    background-color: darkslateblue;
+    border-radius: 5px;
+    color: white;
+}
+
+.text .queue {
+    font-size: 6em;
+    font-weight: bolder;
+    color: black;
+}
+/* Left */
+.animate {
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.headanimate {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    
+    background-color: #652299;
+    color: white;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.bodyanimate {
+    background-color: #fff;
+    color: black;
+    display: block;
+    height: 610px;
+    overflow-y: hidden;
+}
+
+.rowsanimate{
+    display: flex;flex-direction: row;align-items:stretch;
+}
+
+ .bodyanimate .rowsanimate:nth-child(even) {
+    background-color: #C4B5FF;
+  } 
+
+  .called {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    font-size: 3em;
+    font-weight: bolder;
+    text-align: center;
+  }

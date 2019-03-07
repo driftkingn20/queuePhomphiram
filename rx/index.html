@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ห้องยา</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div class="popup">
+        <div class="q" style="font-size: 220px;">A003</div>
+        <div class="ch" style="font-size: 100px;">ช่อง 3</div>
+    </div>
+    <div class="main">
+        <div class="container" style="flex-basis: 30%">
+            <div style="color: white;font-size: 3em;font-weight: bold;background-color:darkred;text-align: center;">รอเรียก</div>
+            <div class="animate">
+                <div class="headanimate">
+                    <div style="flex:1">หมายเลข</div>
+                    <div style="flex:1">ประมาณ</div>
+                </div>
+                <div id="data-q" class="bodyanimate">
+                    <div class="rowsanimate">
+                        <div class="rowlist" style="flex:1;text-align: center;">A001</div>
+                        <div class="rowlist" style="flex:1;text-align: center;">10นาที</div>
+                    </div>
+                    <div class="rowsanimate">
+                        <div class="rowlist" style="flex:1;text-align: center;">A001</div>
+                        <div class="rowlist" style="flex:1;text-align: center;">10นาที</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="flex-basis: 40%">
+            <div class="calling">
+
+                <div class="box" style="margin-bottom:10px;height: 400px;">
+                    <div class="called">
+                        <div style="flex:1;background-color:darkorange;font-size: 80px;" class="label" >ช่อง-1</div>
+                        
+
+                    </div>
+                    <div class="called" style="margin-top:15px">
+                            <div style="flex:3;font-size: 70px;" class="rx1 q">-</div>
+                        </div>
+                    <div class="called">
+                        <div style="flex:3;font-size: 60px;" class="rx1 name">-</div>
+                    </div>
+                </div>
+
+                <div class="box" style="margin-bottom:10px;height: 400px;">
+                    <div class="called">
+                        <div style="flex:1;background-color:palevioletred;font-size: 80px;" class="label">ช่อง-2</div>
+                        
+
+                    </div>
+                    <div class="called" style="margin-top:15px">
+                            <div style="flex:3;font-size: 70px;" class="rx2 q">-</div>
+                        </div>
+                    <div class="called">
+                        <div style="flex:3;font-size: 60px;" class="rx2 name">-</div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="container" style="flex-basis: 30%">
+            <div style="color: white;font-size: 3em;font-weight: bold;background-color: darkgreen;text-align: center;">เรียกแล้ว</div>
+            <div class="animate">
+                <div class="headanimate">
+                    <div style="flex:1">หมายเลข</div>
+                    <div style="flex:1">ช่อง</div>
+                </div>
+                <div id="data-called" class="bodyanimate">
+                    <div class="rowsanimate">
+                        <div class="rowlist" style="flex:1;text-align: center;">A001</div>
+                        <div class="rowlist" style="flex:1;text-align: center;">10นาที</div>
+                    </div>
+                    <div class="rowsanimate">
+                        <div class="rowlist" style="flex:1;text-align: center;">A001</div>
+                        <div class="rowlist" style="flex:1;text-align: center;">10นาที</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="background-color: black;color: white;font-size: 42px">
+        <marquee class="marquee">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</marquee>
+    </div>
+
+
+
+    <script src="../dist/jquery.min.js"></script>
+    <script src="../dist/socket.io.js"></script>
+
+    <script>
+        function blinkX(callback, delay, repetitions) {
+            var x = 0;
+            var intervalID = window.setInterval(function () {
+                callback();
+                if (++x === repetitions) {
+                    window.clearInterval(intervalID);
+                }
+            }, delay);
+        }
+
+        function popup(q, ch, delay = 5000) {
+            $('.popup .q').html(q.toUpperCase())
+            $('.popup .ch').html(ch)
+            $('.main').css('opacity', '0.25')
+            $('.popup').css('opacity', '1')
+            setTimeout(function () {
+                $('.popup').css('opacity', '0')
+                $('.main').css('opacity', '1')
+            }, delay)
+        }
+
+        function reload(speed = 45 * 1000) {
+            $("#data-q").load('left.php', function () {
+                console.log('reload...left');
+                $("#data-q").animate({
+                    scrollTop: 0
+                });
+                $("#data-q").animate({
+                    scrollTop: $('#data-q').prop("scrollHeight")
+                }, speed, 'linear');
+            });
+            $("#data-called").load('right.php', function () {
+                console.log('reload...right');
+                $("#data-called").animate({
+                    scrollTop: 0
+                });
+                $("#data-called").animate({
+                    scrollTop: $('#data-called').prop("scrollHeight")
+                }, speed, 'linear');
+            });
+        }
+
+        $(document).ready(function () {
+
+            var socket = io("http://192.168.0.248:19009");
+
+            $(".marquee").load("marquee.php");
+            reload();
+            var timerloadwaitlist = setInterval(function () {
+                reload();
+            }, 15 * 1000);
+
+            socket.on("rx1", function (q) {
+                
+                if (q != "s99999") {
+                    popup(q,'ช่อง-1',5000);
+                    $(".rx1.q").html(q.toUpperCase());
+                    $(".rx1.name").load("get_name.php?q=" + q);
+                    setTimeout(function(){
+                            blinkX(function() { $(".rx1.q").toggleClass("blink")},650,16); 
+                        },5000);   
+                }
+            })
+            socket.on("rx2", function (q) {
+                
+                if (q != "s99999") {
+                    popup(q,'ช่อง-2',5000);
+                    $(".rx2.q").html(q.toUpperCase());
+                    $(".rx2.name").load("get_name.php?q=" + q);
+                    setTimeout(function(){
+                            blinkX(function() { $(".rx2.q").toggleClass("blink")},650,16); 
+                        },5000);   
+                }
+            })
+            
+
+        });
+    </script>
+</body>
+
+</html>

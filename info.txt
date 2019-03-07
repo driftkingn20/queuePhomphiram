@@ -1,0 +1,18 @@
+##Hos
+db	hos
+ip	192.168.0.254
+user	sa
+pass	+mysqlplkdbpxsoh@+
+
+##server Queue
+192.168.0.248
+61.19.22.158
+user	root
+pass	ris,rbik,
+
+##User hos
+user	nook
+pass	nookadmin
+
+##Internet 
+pass	

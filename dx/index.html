@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>ห้องตรวจ1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../dist/main.css" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../dist/bootstrap3/bootstrap.min.css" />
+  <style>
+    .blink {
+      opacity: 0;
+    }
+  </style>
+</head>
+
+<body style="background-color: #551d80;">
+  <div class="popup">
+    <div class="q" style="font-size: 220px;">A003</div>
+    <div class="ch" style="font-size: 100px;">ช่อง 3</div>
+  </div>
+
+  <div id="main">
+    <div class="flex-fill">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <div style="color: white;font-size: 4em;font-weight: bold;background-color:darkorange;text-align: center;">รอเรียก</div>
+            <div class="animate">
+              <div class="headanimate">
+                <div style="flex:1">หมายเลข</div>
+                <div style="flex:3">ชื่อ-สกุล</div>
+              </div>
+              <div id="data-q" class="bodyanimate">
+                <div class="rowsanimate">
+                  <div class="rowlist" style="flex:1;text-align: center;">A001</div>
+                  <div class="rowlist" style="flex:3;text-align: center;">คุณทดสอบ ระบบ</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div style="color: white;font-size: 4em;font-weight: bold;background-color:darkgreen;text-align: center;">รอพบแพทย์</div>
+            <div class="animate">
+              <div class="headanimate">
+                <div style="flex:1">หมายเลข</div>
+                <div style="flex:3">ชื่อ-สกุล</div>
+              </div>
+              <div id="data-called" class="bodyanimate">
+                <div class="rowsanimate">
+                  <div class="rowlist" style="flex:1;text-align: center;">A001</div>
+                  <div class="rowlist" style="flex:3;text-align: center;">คุณทดสอบ ระบบ</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <footer class="footer">
+            <div class="fixed-bottom" style="position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+            text-align: center;">
+              <div style="background-color:black;" id="textMarquee"></div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="../dist/jquery.min.js"></script>
+  <!-- <script src="../dist/jquery-1.12.4.min.js"></script> -->
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="../dist/bootstrap3/bootstrap.min.js"></script>
+  <script src="../dist/socket.io.js"></script>
+  <script>
+    function blinkX(callback, delay, repetitions) {
+      var x = 0;
+      var intervalID = window.setInterval(function () {
+        callback();
+        if (++x === repetitions) {
+          window.clearInterval(intervalID);
+        }
+      }, delay);
+    }
+
+    function popup(q, ch, delay = 5000) {
+      $('.popup .q').html(q.toUpperCase())
+      $('.popup .ch').html(ch)
+      $('.main').css('opacity', '0.25')
+      $('.popup').css('opacity', '1')
+      setTimeout(function () {
+        $('.popup').css('opacity', '0')
+        $('.main').css('opacity', '1')
+      }, delay)
+    }
+
+    function reload(speed = 45 * 1000) {
+      $("#data-q").load('wait.php', function () {
+        console.log('reload...left');
+        $("#data-q").animate({
+          scrollTop: 0
+        });
+        $("#data-q").animate({
+          scrollTop: $('#data-q').prop("scrollHeight")
+        }, speed, 'linear');
+      });
+
+      $("#data-called").load('called.php', function () {
+        console.log('reload...right');
+        $("#data-called").animate({
+          scrollTop: 0
+        });
+        $("#data-called").animate({
+          scrollTop: $('#data-called').prop("scrollHeight")
+        }, speed, 'linear');
+      });
+    }
+
+    $(document).ready(function () {
+      var socket = io("http://192.168.0.248:19009");
+      $("#textMarquee").load("marquee.php");
+      reload();
+      var timerloadwaitlist = setInterval(function () {
+        reload();
+      }, 15 * 1000);
+
+      socket.on("dx1", function (q) {
+
+        if (q != "s99999") {
+          popup(q, 'ห้องตรวจโรค', 5000);
+          $(".dx1.q").html(q.toUpperCase());
+          $(".dx1.name").load("get_name.php?q=" + q);
+          setTimeout(function () {
+            blinkX(function () {
+              $(".dx1.q").toggleClass("blink")
+            }, 650, 16);
+          }, 5000);
+        }
+      });
+
+
+    });
+  </script>
+</body>
+
+</html>

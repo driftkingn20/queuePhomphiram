@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>หน้าจอห้องฉุกเฉิน</title>
+
+  <!-- Bootstrap -->
+  <link href="../dist/bootstrap3/bootstrap.min.css" rel="stylesheet">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- <link href="waiterstyle.css" rel="stylesheet"> -->
+  <link href="../dist/FontAwesome/css/all.css" rel="stylesheet">
+  <style>
+
+  </style>
+
+</head>
+
+<body style="background-color: #551d80;">
+  <div class="popup">
+    <div class="q" style="font-size: 220px;">A003</div>
+    <div class="ch" style="font-size: 100px;">ช่อง 3</div>
+</div>
+
+  <div id="main">
+    <div class="flex-fill">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-sm-6">
+            <div class="row">
+              <div style="margin-left: 15px;">
+                <div style="color: white;font-size: 4em;font-weight: bold;background-color:darkorange;text-align: center;">รอเรียก</div>
+                <div class="animate">
+                  <div class="headanimate">
+                    <div style="flex:1">หมายเลข</div>
+                    <div style="flex:3">ชื่อ - สกุล</div>
+                  </div>
+                  <div id="data-q" class="bodyanimate">
+                    <div class="rowsanimate">
+                      <div class="rowlist" style="flex:1;text-align: center;">A000</div>
+                      <div class="rowlist" style="flex:0.5;text-align: center;"><i class='far fa-circle' aria-hidden='true'
+                          style='color:green'></i></div>
+                      <div class="rowlist" style="flex:2.5;text-align: center;">คุณทดสอบ ระบบ</div>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-sm-6">
+
+            <div style="margin-left: 15px;margin-right: 10px;">
+
+              <div style="color: white;font-size: 4em;font-weight: bold;background-color:darkgreen;text-align: center;">กำลังรับบริการ</div>
+                <div class="animate">
+                  <div class="headanimate">
+                    <div style="flex:1">หมายเลข</div>
+                    <div style="flex:3">ชื่อ - สกุล</div>
+                  </div>
+                  <div id="data-called" class="bodyanimate">
+                    <div class="rowsanimate">
+                      <div class="rowlist" style="flex:1;text-align: center;">A000</div>
+                      <div class="rowlist" style="flex:0.5;text-align: center;"><i class='far fa-circle' aria-hidden='true'
+                          style='color:green'></i></div>
+                      <div class="rowlist" style="flex:2.5;text-align: center;">คุณทดสอบ ระบบ</div>
+
+                    </div>
+
+                  </div>
+                </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <footer class="footer">
+          <div class="fixed-bottom" style="position: fixed;
+              left: 0;
+              bottom: 0;
+              width: 100%;
+              height: 60px;
+              text-align: center;">
+            <div style="background-color:black;" id="textMarquee"></div>
+          </div>
+        </footer>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="../dist/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="../dist/bootstrap3/bootstrap.min.js"></script>
+  <script src="../dist/socket.io.js"></script>
+  <script>
+    function blinkX(callback, delay, repetitions) {
+      var x = 0;
+      var intervalID = window.setInterval(function () {
+        callback();
+        if (++x === repetitions) {
+          window.clearInterval(intervalID);
+        }
+      }, delay);
+    }
+
+    function popup(q, ch, delay = 5000) {
+      $('.popup .q').html(q.toUpperCase())
+      $('.popup .ch').html(ch)
+      $('.main').css('opacity', '0.25')
+      $('.popup').css('opacity', '1')
+      setTimeout(function () {
+        $('.popup').css('opacity', '0')
+        $('.main').css('opacity', '1')
+      }, delay)
+    }
+
+    function reload(speed = 45 * 1000) {
+      $("#data-q").load('wait.php', function () {
+        console.log('reload...left');
+        $("#data-q").animate({
+          scrollTop: 0
+        });
+        $("#data-q").animate({
+          scrollTop: $('#data-q').prop("scrollHeight")
+        }, speed, 'linear');
+      });
+      $("#data-called").load('call.php', function () {
+        console.log('reload...right');
+        $("#data-called").animate({
+          scrollTop: 0
+        });
+        $("#data-called").animate({
+          scrollTop: $('#data-called').prop("scrollHeight")
+        }, speed, 'linear');
+      });
+    }
+
+
+    $(document).ready(function () {
+
+      var socket = io("http://10.0.100.107:19009");
+      $("#textMarquee").load("marquee.php");
+      reload();
+      var timerloadwaitlist = setInterval(function () {
+        reload();
+      }, 15 * 1000);
+
+      socket.on("er", function (q) {
+
+        if (q != "s99999") {
+
+          popup(q, 'ห้องฉุกเฉิน', 10000);
+        }
+      });
+
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+
+.flex-fill {
+    height:100vh;
+    width:100vw;
+}
+
+#customers {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: black;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 3em;
+    font-weight: bold;
+  }
+  
+  
+  #customers tr {
+    border-bottom: 1px solid #E3F1D5;
+    background-color: #FFFFFF;
+  
+  }
+  
+  #customers tr:nth-child(even) {
+    background-color: #C4B5FF;
+  }
+  
+  
+  #customers th {
+    color: #FFFFFF;
+    text-align: center;
+    background: #652299;
+  }
+.flex-fill {
+    flex: 1 1 auto;
+}
+
+#vertical {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.spancard {
+    font-size: 45px;
+}
+
+.box {
+    padding: 0px -10px;
+
+}
+
+.box-part {
+    background: #FFF;
+    border-radius: 0;
+    padding: 5px 10px;
+    margin: 10px 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.blinkX {
+    opacity: 0;
+}
+
+#boxcolor {
+    background-color: #551d80;
+    
+}
+
+.labelcolor {
+    background-color: #652299;
+}
+
+#boxcolor1 {
+    background-color: #004D40;
+}
+
+#labelcolor1 {
+    background-color: #00695C;
+}
+
+#boxcolor2 {
+    background-color: #4E342E;
+}
+
+#labelcolor2 {
+    background-color: #3E2723;
+}
+
+#boxcolor3 {
+    background-color: #700416;
+}
+
+#labelcolor3 {
+    background-color: #910000;
+}
+
+#boxcolor4 {
+    background-color: #893089;
+}
+
+#labelcolor4 {
+    background-color: #aa3baa;
+}
+
+#boxcolor5 {
+    background-color: #031233;
+}
+
+#labelcolor5 {
+    background-color: #052670;
+}
+
+
+
+.title .label {
+    padding: 4px;
+    font-size: 4em;
+    border-radius: 5px;
+    color: white;
+}
+
+.title .queue {
+    font-size: 4em;
+    font-weight: 1000;
+    margin-left: 40px;
+    color: white;
+}
+
+.fa {
+    color: #4183D7;
+}
